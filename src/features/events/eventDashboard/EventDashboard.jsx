@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Grid } from 'semantic-ui-react';
 import EventList from './EventList';
 import EventForm from '../eventForm/EventForm';
-import { sampleData } from '../../app/api/sampleData';
+import { sampleData } from '../../../app/api/sampleData';
 
 function EventDashboard({ formOpen, setFormOpen, selectedEvent, selectEvent }) {
   const [events, setEvents] = useState(sampleData);
