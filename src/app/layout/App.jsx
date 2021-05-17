@@ -43,4 +43,4 @@ function App() {
 
 export default App;
 
-// 05.6
+// 05.9 Event Detailed Page structure
