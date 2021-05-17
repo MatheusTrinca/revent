@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { Route } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import EventDashboard from '../../features/events/eventDashboard/EventDashboard';
+import EventDetailedPage from '../../features/events/eventDetailed/EventDetailedPage';
+import EventForm from '../../features/events/eventForm/EventForm';
+import HomePage from '../../features/home/HomePage';
 import Navbar from '../../features/nav/Navbar';
 
 function App() {
@@ -19,19 +23,24 @@ function App() {
 
   return (
     <>
-      <Navbar setFormOpen={handleCreateFormOpen} />
-      <Container className="main">
-        <EventDashboard
-          formOpen={formOpen}
-          setFormOpen={setFormOpen}
-          selectEvent={handleSelectedEvent}
-          selectedEvent={selectedEvent}
-        />
-      </Container>
+      <Route exact path="/" component={HomePage} />
+      <Route
+        path={'/(.+)'}
+        render={() => (
+          <>
+            <Navbar setFormOpen={handleCreateFormOpen} />
+            <Container className="main">
+              <Route exact path="/events" component={EventDashboard} />
+              <Route path="/events/:id" component={EventDetailedPage} />
+              <Route path="/createEvent" component={EventForm} />
+            </Container>
+          </>
+        )}
+      />
     </>
   );
 }
 
 export default App;
 
-// 04.6
+// 05.6
