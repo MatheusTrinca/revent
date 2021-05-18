@@ -6,6 +6,7 @@ import EventDetailedPage from '../../features/events/eventDetailed/EventDetailed
 import EventForm from '../../features/events/eventForm/EventForm';
 import HomePage from '../../features/home/HomePage';
 import Navbar from '../../features/nav/Navbar';
+import Sandbox from '../../features/sandbox/Sandbox';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Navbar />
             <Container className="main">
               <Route exact path="/events" component={EventDashboard} />
+              <Route exact path="/sandbox" component={Sandbox} />
               <Route path="/events/:id" component={EventDetailedPage} />
               <Route
                 path={['/createEvent', '/manage/:id']}
@@ -32,5 +34,3 @@ function App() {
 }
 
 export default App;
-
-// 05.11 Cleaning up the unused code
