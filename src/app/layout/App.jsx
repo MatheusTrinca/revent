@@ -43,4 +43,4 @@ function App() {
 
 export default App;
 
-// 05.9 Event Detailed Page structure
+// 05.11 Cleaning up the unused code
