@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement } from './testReducer';
 
 export default function Sandbox() {
-  const data = useSelector(state => state.data);
+  const data = useSelector(state => state.test.data);
   const dispatch = useDispatch();
 
   return (
