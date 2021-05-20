@@ -8,6 +8,9 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import MyTextInput from '../../../app/common/form/MyTextInput';
 import MyTextAreaInput from '../../../app/common/form/MyTextAreaInput';
+import MySelectInput from '../../../app/common/form/MySelectInput';
+import MyDateInput from '../../../app/common/form/MyDateInput';
+import { categoryData } from '../../../app/api/categoryOptions';
 
 const EventForm = ({ match, history }) => {
   const selectedEvent = useSelector(state =>
@@ -57,7 +60,11 @@ const EventForm = ({ match, history }) => {
         <Form className="ui form">
           <Header sub color="teal" content="Event Details" />
           <MyTextInput placeholder="Event Title" name="title" />
-          <MyTextInput placeholder="Event Category" name="category" />
+          <MySelectInput
+            placeholder="Event Category"
+            name="category"
+            options={categoryData}
+          />
           <MyTextAreaInput
             placeholder="Description"
             name="description"
@@ -66,8 +73,14 @@ const EventForm = ({ match, history }) => {
           <Header sub color="teal" content="Event Location Details" />
           <MyTextInput placeholder="City" name="city" />
           <MyTextInput placeholder="Venue" name="venue" />
-          <MyTextInput placeholder="Event Date" name="date" type="date" />
-
+          <MyDateInput
+            placeholderText="Event Date"
+            name="date"
+            timeFormat="HH:mm"
+            showTimeSelect
+            timeCaption="time"
+            dateFormat="MMMM d, yyyy h:mm a"
+          />
           <Button type="submit" floated="right" positive content="Submit" />
           <Button as={Link} to="/events" floated="right" content="Cancel" />
         </Form>

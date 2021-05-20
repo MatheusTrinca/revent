@@ -1,3 +1,3 @@
 # REVENT
 
-06.8. Creating the event reducer
+07.10. Date-FNS
