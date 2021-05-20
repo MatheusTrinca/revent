@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Segment, Header, Button, FormField } from 'semantic-ui-react';
+import { Segment, Header, Button, FormField, Label } from 'semantic-ui-react';
 import cuid from 'cuid';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateEvent, createEvent } from '../eventActions';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 const EventForm = ({ match, history }) => {
   const selectedEvent = useSelector(state =>
@@ -22,27 +23,24 @@ const EventForm = ({ match, history }) => {
     date: '',
   };
 
-  const [values, setValues] = useState(initialValues);
+  // const handleFormSubmit = () => {
+  //   selectedEvent
+  //     ? dispatch(updateEvent({ ...selectedEvent, ...values }))
+  //     : dispatch(
+  //         createEvent({
+  //           ...values,
+  //           id: cuid(),
+  //           hostedBy: 'Bob',
+  //           attendees: [],
+  //           hostPhotoURL: '/assets/user.png',
+  //         })
+  //       );
+  //   history.push('/events');
+  // };
 
-  const handleInputChange = e => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
-  };
-
-  const handleFormSubmit = () => {
-    selectedEvent
-      ? dispatch(updateEvent({ ...selectedEvent, ...values }))
-      : dispatch(
-          createEvent({
-            ...values,
-            id: cuid(),
-            hostedBy: 'Bob',
-            attendees: [],
-            hostPhotoURL: '/assets/user.png',
-          })
-        );
-    history.push('/events');
-  };
+  const validationSchema = Yup.object({
+    title: Yup.string().required('You must provide a title'),
+  });
 
   return (
     <Segment clearing>
@@ -50,10 +48,15 @@ const EventForm = ({ match, history }) => {
       <Formik
         initialValues={initialValues}
         onSubmit={values => console.log(values)}
+        validationSchema={validationSchema}
       >
         <Form className="ui form">
           <FormField>
             <Field name="title" placeholder="Event Title" />
+            <ErrorMessage
+              name="title"
+              render={error => <Label basic color="red" content={error} />}
+            />
           </FormField>
           <FormField>
             <Field name="category" placeholder="Category" />
