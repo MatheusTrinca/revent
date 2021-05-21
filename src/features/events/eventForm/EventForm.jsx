@@ -57,33 +57,48 @@ const EventForm = ({ match, history }) => {
         }}
         validationSchema={validationSchema}
       >
-        <Form className="ui form">
-          <Header sub color="teal" content="Event Details" />
-          <MyTextInput placeholder="Event Title" name="title" />
-          <MySelectInput
-            placeholder="Event Category"
-            name="category"
-            options={categoryData}
-          />
-          <MyTextAreaInput
-            placeholder="Description"
-            name="description"
-            rows={2}
-          />
-          <Header sub color="teal" content="Event Location Details" />
-          <MyTextInput placeholder="City" name="city" />
-          <MyTextInput placeholder="Venue" name="venue" />
-          <MyDateInput
-            placeholderText="Event Date"
-            name="date"
-            timeFormat="HH:mm"
-            showTimeSelect
-            timeCaption="time"
-            dateFormat="MMMM d, yyyy h:mm a"
-          />
-          <Button type="submit" floated="right" positive content="Submit" />
-          <Button as={Link} to="/events" floated="right" content="Cancel" />
-        </Form>
+        {({ isSubmitting, isValid, dirty }) => (
+          <Form className="ui form">
+            <Header sub color="teal" content="Event Details" />
+            <MyTextInput placeholder="Event Title" name="title" />
+            <MySelectInput
+              placeholder="Event Category"
+              name="category"
+              options={categoryData}
+            />
+            <MyTextAreaInput
+              placeholder="Description"
+              name="description"
+              rows={2}
+            />
+            <Header sub color="teal" content="Event Location Details" />
+            <MyTextInput placeholder="City" name="city" />
+            <MyTextInput placeholder="Venue" name="venue" />
+            <MyDateInput
+              placeholderText="Event Date"
+              name="date"
+              timeFormat="HH:mm"
+              showTimeSelect
+              timeCaption="time"
+              dateFormat="MMMM d, yyyy h:mm a"
+            />
+            <Button
+              loading={isSubmitting}
+              disabled={isSubmitting || !dirty || !isValid}
+              type="submit"
+              floated="right"
+              positive
+              content="Submit"
+            />
+            <Button
+              disabled={isSubmitting}
+              as={Link}
+              to="/events"
+              floated="right"
+              content="Cancel"
+            />
+          </Form>
+        )}
       </Formik>
     </Segment>
   );
