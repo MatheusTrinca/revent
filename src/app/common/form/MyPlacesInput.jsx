@@ -15,6 +15,14 @@ export default function MyTextInput({ label, options, ...props }) {
       .then(latLng => helpers.setValue({ address, latLng }))
       .catch(error => helpers.setError(error));
   };
+
+  const handleBlur = e => {
+    field.onBlur(e);
+    if (!field.value.latLng) {
+      helpers.setValue({ address: '', latLng: null });
+    }
+  };
+
   return (
     <PlacesAutocomplete
       value={field.value['address']}
@@ -24,10 +32,16 @@ export default function MyTextInput({ label, options, ...props }) {
     >
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <FormField error={meta.touched && !!meta.error}>
-          <input {...getInputProps({ name: field.name, ...props })} />
+          <input
+            {...getInputProps({
+              name: field.name,
+              onBlur: e => handleBlur(e),
+              ...props,
+            })}
+          />
           {meta.touched && meta.error ? (
             <Label basic color="red">
-              {meta.error}
+              {meta.error['address']}
             </Label>
           ) : null}
           {suggestions?.length > 0 && (

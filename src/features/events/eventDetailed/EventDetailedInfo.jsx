@@ -21,7 +21,7 @@ export default function EventDetailedInfo({ event }) {
             <Icon name="calendar" size="large" color="teal" />
           </Grid.Column>
           <Grid.Column width={15}>
-            <span>{(format(event.date), 'MMMM d, yyyy h:mm a')}</span>
+            <span>{format(event.date, 'MMMM d, yyyy h:mm a')}</span>
           </Grid.Column>
         </Grid>
       </Segment>
@@ -31,7 +31,7 @@ export default function EventDetailedInfo({ event }) {
             <Icon name="marker" size="large" color="teal" />
           </Grid.Column>
           <Grid.Column width={11}>
-            <span>{event.venue}</span>
+            <span>{event.venue.address}</span>
           </Grid.Column>
           <Grid.Column width={4}>
             <Button color="teal" size="tiny" content="Show Map" />
