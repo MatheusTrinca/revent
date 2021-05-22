@@ -3,6 +3,7 @@ import { Button } from 'semantic-ui-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement } from './testReducer';
 import { openModal } from '../../app/common/modals/modalReducer';
+import TestPlacesInput from './TestPlacesInput';
 
 export default function Sandbox() {
   const data = useSelector(state => state.test.data);
@@ -29,6 +30,9 @@ export default function Sandbox() {
           dispatch(openModal({ modalType: 'TestModal', modalProps: { data } }))
         }
       />
+      <div style={{ marginTop: 15 }}>
+        <TestPlacesInput />
+      </div>
     </>
   );
 }
