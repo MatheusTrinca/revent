@@ -25,7 +25,6 @@ export const decrement = value => async dispatch => {
   dispatch(asyncActionStart());
   try {
     await delay(1000);
-    throw 'oops';
     dispatch({ type: DECREMENT_DATA, payload: value });
     dispatch(asyncActionFinish());
   } catch (err) {
