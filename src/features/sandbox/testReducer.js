@@ -1,5 +1,6 @@
 const INCREMENT_DATA = 'INCREMENT_DATA';
 const DECREMENT_DATA = 'DECREMENT_DATA';
+const SET_LATLNG = 'SET_LATLNG';
 
 export const increment = value => ({
   type: INCREMENT_DATA,
@@ -11,8 +12,14 @@ export const decrement = value => ({
   payload: value,
 });
 
+export const setLatLng = latLng => ({
+  type: SET_LATLNG,
+  payload: latLng,
+});
+
 const initialState = {
   data: 42,
+  latLng: null,
 };
 
 export default function testReducer(state = initialState, action) {
@@ -26,6 +33,11 @@ export default function testReducer(state = initialState, action) {
       return {
         ...state,
         data: state.data - action.payload,
+      };
+    case SET_LATLNG:
+      return {
+        ...state,
+        latLng: action.payload,
       };
     default:
       return state;

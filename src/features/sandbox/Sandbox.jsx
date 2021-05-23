@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from 'semantic-ui-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement } from './testReducer';
 import { openModal } from '../../app/common/modals/modalReducer';
 import TestPlacesInput from './TestPlacesInput';
+import TestMap from './TestMap';
 
 export default function Sandbox() {
   const data = useSelector(state => state.test.data);
   const dispatch = useDispatch();
+
+  const [location, setLocation] = useState({
+    center: {
+      lat: 59.95,
+      lng: 30.33,
+    },
+    zoom: 11,
+  });
 
   return (
     <>
@@ -31,7 +40,8 @@ export default function Sandbox() {
         }
       />
       <div style={{ marginTop: 15 }}>
-        <TestPlacesInput />
+        <TestPlacesInput setLocation={setLocation} />
+        <TestMap location={location} />
       </div>
     </>
   );

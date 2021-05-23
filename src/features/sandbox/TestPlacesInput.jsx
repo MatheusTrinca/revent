@@ -4,7 +4,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
-export default function LocationSearchInput() {
+export default function LocationSearchInput({ setLocation }) {
   const [address, setAddress] = useState('');
 
   const handleChange = address => {
@@ -14,7 +14,7 @@ export default function LocationSearchInput() {
   const handleSelect = address => {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
+      .then(latLng => setLocation({ center: latLng, zoom: 14 }))
       .catch(error => console.error('Error', error));
     setAddress(address);
   };
