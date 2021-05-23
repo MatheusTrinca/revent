@@ -29,7 +29,6 @@ export default function EventDetailedChat() {
               </Comment.Actions>
             </Comment.Content>
           </Comment>
-
           <Comment>
             <Comment.Avatar src="/assets/user.png" />
             <Comment.Content>
