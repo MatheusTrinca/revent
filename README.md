@@ -1,3 +1,3 @@
 # REVENT
 
-08.7. Google maps react
+11. Creating and updating events in Firestore
