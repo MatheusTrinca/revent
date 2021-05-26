@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button, Menu } from 'semantic-ui-react';
-import { useDispatch } from 'react-redux';
-import { openModal } from '../../app/common/modals/modalReducer';
+import React from "react";
+import { Button, Menu } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
+import { openModal } from "../../app/common/modals/modalReducer";
 
 export default function SignedOutMenu({ setAuthenticated }) {
   const dispatch = useDispatch();
@@ -11,13 +11,14 @@ export default function SignedOutMenu({ setAuthenticated }) {
         basic
         inverted
         content="Login"
-        onClick={() => dispatch(openModal({ modalType: 'LoginForm' }))}
+        onClick={() => dispatch(openModal({ modalType: "LoginForm" }))}
       />
       <Button
         basic
         inverted
         content="Register"
-        style={{ marginLeft: '0.5rem' }}
+        style={{ marginLeft: "0.5rem" }}
+        onClick={() => dispatch(openModal({ modalType: "RegisterForm" }))}
       />
     </Menu.Item>
   );

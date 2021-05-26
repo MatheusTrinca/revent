@@ -6,31 +6,35 @@ import MyTextInput from '../../app/common/form/MyTextInput';
 import { Button, Label } from 'semantic-ui-react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../app/common/modals/modalReducer';
-import { signInWithEmail } from '../../app/firestore/firebaseService';
+import { createUserInFirebase } from '../../app/firestore/firebaseService';
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const dispatch = useDispatch();
   return (
-    <ModalWrapper size="mini" header="Sign in to Revents">
+    <ModalWrapper size="mini" header="Register to Revents">
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ displayName: '', email: '', password: '' }}
         validationSchema={Yup.object({
+          displayName: Yup.string().required(),
           email: Yup.string().required().email(),
-          password: Yup.string().required(),
+          password: Yup.string().required().min(6),
         })}
         onSubmit={async (values, { setSubmitting, setErrors }) => {
           try {
-            await signInWithEmail(values);
+            await createUserInFirebase(values);
             setSubmitting(false);
             dispatch(closeModal());
           } catch (error) {
-            setSubmitting(false);
-            setErrors({ auth: 'Invalid username or password' });
+            setErrors({
+              auth: error.message,
+            });
+            console.log(error);
           }
         }}
       >
         {({ isSubmitting, isValid, dirty, errors }) => (
           <Form className="ui form">
+            <MyTextInput name="displayName" placeholder="Display Name" />
             <MyTextInput name="email" placeholder="Email Address" />
             <MyTextInput
               name="password"
@@ -51,7 +55,7 @@ export default function LoginForm() {
               color="teal"
               fluid
               size="large"
-              content="Login"
+              content="Register"
               type="submit"
             />
           </Form>
