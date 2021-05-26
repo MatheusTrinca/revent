@@ -1,3 +1,3 @@
 # REVENT
 
-11. Creating and updating events in Firestore
+11.4. Signing out the user

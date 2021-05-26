@@ -1,11 +1,8 @@
 import { SIGN_IN_USER, SIGN_OUT_USER } from './authConstants';
 
 const INITIAL_STATE = {
-  authenticated: true,
-  currentUser: {
-    email: 'bob@test.com',
-    photoURL: '/assets/user.png',
-  },
+  authenticated: false,
+  currentUser: null,
 };
 
 export default function authReducer(state = INITIAL_STATE, { type, payload }) {
