@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button, Header, Label, Segment } from 'semantic-ui-react';
 import * as Yup from 'yup';
 import MyTextInput from '../../app/common/form/MyTextInput';
+import { updateUserPassword } from '../../app/firestore/firebaseService';
 
 export default function AccountPage() {
   const { currentUser } = useSelector(state => state.auth);
@@ -13,18 +14,28 @@ export default function AccountPage() {
       <Header dividing size="large" content="Account" />
       {currentUser.providerId === 'password' && (
         <>
-          <Header sub color="teal" contet="Change Password" />
+          <Header sub size="large" color="teal" content="Change Password" />
           <p>Use this form to change your password</p>
           <Formik
             initialValues={{ newPassword1: '', newPassword2: '' }}
             validationSchema={Yup.object({
-              password1: Yup.string().required('Password is required').min(6),
-              password2: Yup.string().oneOf(
+              newPassword1: Yup.string()
+                .required('Password is required')
+                .min(6, 'Password must be at least 6 characters'),
+              newPassword2: Yup.string().oneOf(
                 [Yup.ref('newPassword1'), null],
                 'Passwords do not match'
               ),
             })}
-            onSubmit={values => console.log(values)}
+            onSubmit={async (values, { setSubmitting, setErrors }) => {
+              try {
+                await updateUserPassword(values);
+              } catch (error) {
+                setErrors({ auth: error.message });
+              } finally {
+                setSubmitting(false);
+              }
+            }}
           >
             {({ isSubmitting, isValid, dirty, errors }) => (
               <Form className="ui form">
