@@ -1,3 +1,3 @@
 # REVENT
 
-11.4. Signing out the user
+12.3. Adding the profile content
