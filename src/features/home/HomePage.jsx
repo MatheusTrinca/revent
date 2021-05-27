@@ -16,7 +16,7 @@ export default function HomePage({ history }) {
           <Image
             size="massive"
             src="/assets/logo.png"
-            style={{ marginBottom: 12 }}
+            style={{ marginBottom: 11 }}
           />
           Revents
         </Header>
