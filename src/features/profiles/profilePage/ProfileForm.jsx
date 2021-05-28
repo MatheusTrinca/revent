@@ -4,6 +4,8 @@ import MyTextInput from '../../../app/common/form/MyTextInput';
 import MyTextAreaInput from '../../../app/common/form/MyTextAreaInput';
 import { Button } from 'semantic-ui-react';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+import { updateProfile } from '../../../app/firestore/firestoreService';
 
 export default function ProfileForm({ profile }) {
   return (
@@ -15,12 +17,24 @@ export default function ProfileForm({ profile }) {
       validationSchema={Yup.object({
         displayName: Yup.string().required('Name is required'),
       })}
-      onSubmit={values => console.log(values)}
+      onSubmit={async (values, { setSubmitting }) => {
+        try {
+          await updateProfile(values);
+        } catch (error) {
+          toast.error(error);
+        } finally {
+          setSubmitting(false);
+        }
+      }}
     >
       {({ isSubmitting, isValid, dirty }) => (
         <Form className="ui form">
           <MyTextInput name="displayName" placeholder="Display Name" />
-          <MyTextAreaInput rows={4} name="description" placeholder="Description" />
+          <MyTextAreaInput
+            rows={4}
+            name="description"
+            placeholder="Description"
+          />
           <Button
             floated="right"
             loading={isSubmitting}

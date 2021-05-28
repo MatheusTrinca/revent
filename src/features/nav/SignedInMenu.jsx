@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 export default function SignedInMenu() {
   const history = useHistory();
-  const { currentUser } = useSelector(state => state.auth);
+  const { selectedUserProfile } = useSelector(state => state.profile);
 
   const handleSignOut = async () => {
     try {
@@ -22,9 +22,12 @@ export default function SignedInMenu() {
       <Image
         avatar
         spaced="right"
-        src={currentUser.photoURL || '/assets/user.png'}
+        src={selectedUserProfile.photoURL || '/assets/user.png'}
       />
-      <Dropdown pointing="top left" text={`Hello ${currentUser.displayName}`}>
+      <Dropdown
+        pointing="top left"
+        text={`Hello ${selectedUserProfile.displayName}`}
+      >
         <Dropdown.Menu>
           <Dropdown.Item
             as={Link}
@@ -34,7 +37,7 @@ export default function SignedInMenu() {
           />
           <Dropdown.Item
             as={Link}
-            to={`/profile/${currentUser.uid}`}
+            to={`/profile/${selectedUserProfile.id}`}
             text="My profile"
             icon="user"
           />
