@@ -1,3 +1,3 @@
 # REVENT
 
-12.3. Adding the profile content
+12.8. Adding the update user actions

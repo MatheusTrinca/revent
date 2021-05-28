@@ -1,18 +1,9 @@
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import {
-  asyncActionStart,
-  asyncActionFinish,
-  asyncActionError,
-} from '../async/asyncReduces';
+import { asyncActionStart, asyncActionFinish, asyncActionError } from '../async/asyncReduces';
 import { dataFromSnapshot } from '../firestore/firestoreService';
 
-export default function useFirestoreDoc({
-  query,
-  data,
-  deps,
-  shouldExecute = true,
-}) {
+export default function useFirestoreDoc({ query, data, deps, shouldExecute = true }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,7 +15,7 @@ export default function useFirestoreDoc({
           dispatch(
             asyncActionError({
               code: 'not-found',
-              message: 'Counl not find document',
+              message: 'Could not find document',
             })
           );
           return;
