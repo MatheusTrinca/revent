@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { updateProfile } from '../../../app/firestore/firestoreService';
 
-export default function ProfileForm({ profile }) {
+export default function ProfileForm({ profile, setEditMode }) {
   return (
     <Formik
       initialValues={{
@@ -20,6 +20,7 @@ export default function ProfileForm({ profile }) {
       onSubmit={async (values, { setSubmitting }) => {
         try {
           await updateProfile(values);
+          setEditMode(false);
         } catch (error) {
           toast.error(error);
         } finally {
@@ -30,11 +31,7 @@ export default function ProfileForm({ profile }) {
       {({ isSubmitting, isValid, dirty }) => (
         <Form className="ui form">
           <MyTextInput name="displayName" placeholder="Display Name" />
-          <MyTextAreaInput
-            rows={4}
-            name="description"
-            placeholder="Description"
-          />
+          <MyTextAreaInput rows={4} name="description" placeholder="Description" />
           <Button
             floated="right"
             loading={isSubmitting}

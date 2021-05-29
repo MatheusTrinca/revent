@@ -1,3 +1,10 @@
 # REVENT
 
-12.8. Adding the update user actions
+React
+Redux
+Firebase
+React Semantic UI
+Formik
+React Google Maps
+Dropzone
+Cropper
