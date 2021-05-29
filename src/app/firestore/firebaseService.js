@@ -3,9 +3,7 @@ import { toast } from 'react-toastify';
 import { setUserProfileData } from './firestoreService';
 
 export function signInWithEmail(creds) {
-  return firebase
-    .auth()
-    .signInWithEmailAndPassword(creds.email, creds.password);
+  return firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);
 }
 
 export function signOutFirebase() {
@@ -47,4 +45,17 @@ export async function socialLogin(selectedProvider) {
 export function updateUserPassword(creds) {
   const user = firebase.auth().currentUser;
   return user.updatePassword(creds.newPassword1);
+}
+
+export function uploadToFirebaseStorage(file, filename) {
+  const user = firebase.auth().currentUser;
+  const storageRef = firebase.storage().ref();
+  return storageRef.child(`${user.uid}/user_images/${filename}`).put(file);
+}
+
+export function deleteFromFirebaseStorage(filename) {
+  const user = firebase.auth().currentUser;
+  const storageRef = firebase.storage().ref();
+  const photoRef = storageRef.child(`${user.uid}/user_images/${filename}`);
+  return photoRef.delete();
 }
