@@ -1,5 +1,4 @@
 import firebase from '../config/firebase';
-import cuid from 'cuid';
 
 const db = firebase.firestore();
 
@@ -132,4 +131,19 @@ export async function setMainPhoto(photo) {
 export function deletePhotoFromCollection(photoId) {
   const userId = firebase.auth().currentUser.uid;
   return db.collection('users').doc(userId).collection('photos').doc(photoId).delete();
+}
+
+export function addEventAttendance(event) {
+  const user = firebase.auth().currentUser;
+  return db
+    .collection('events')
+    .doc(event.id)
+    .update({
+      attendees: firebase.firestore.FieldValue.arrayUnion({
+        id: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL || null,
+      }),
+      attendeesIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
+    });
 }

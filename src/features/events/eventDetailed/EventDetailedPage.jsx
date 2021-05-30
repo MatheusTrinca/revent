@@ -20,21 +20,25 @@ export default function EventDetailedPage({ match }) {
 
   const { loading, error } = useSelector(state => state.async);
 
+  const { currentUser } = useSelector(state => state.auth);
+
+  const isHost = currentUser?.uid === event?.userUid;
+  const isGoing = event?.attendees?.some(att => att.id === currentUser.uid);
+
   useFirestoreDoc({
     query: () => listenToEventFromFirestore(match.params.id),
     data: event => dispatch(listenToEvents([event])),
     deps: [match.params.id],
   });
 
-  if (loading || (!event && !error))
-    return <LoadingComponent content="Loading event..." />;
+  if (loading || (!event && !error)) return <LoadingComponent content="Loading event..." />;
 
   if (error) return <Redirect to="/error" />;
 
   return (
     <Grid>
       <Grid.Column width={10}>
-        <EventDetailedHeader event={event} />
+        <EventDetailedHeader event={event} isGoing={isGoing} isHost={isHost} />
         <EventDetailedInfo event={event} />
         <EventDetailedChat />
       </Grid.Column>
