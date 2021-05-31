@@ -20,8 +20,21 @@ export function dataFromSnapshot(snapshot) {
   };
 }
 
-export function listenToEventsFromFirestore() {
-  return db.collection('events').orderBy('date');
+export function listenToEventsFromFirestore(predicate) {
+  const user = firebase.auth().currentUser;
+  let eventsRef = db.collection('events').orderBy('date');
+  switch (predicate.get('filter')) {
+    case 'isGoing':
+      return eventsRef
+        .where('attendeesIds', 'array-contains', user.uid)
+        .where('date', '>=', predicate.get('startDate'));
+    case 'isHosting':
+      return eventsRef
+        .where('userUid', '==', user.uid)
+        .where('date', '>=', predicate.get('startDate'));
+    default:
+      return eventsRef.where('date', '>=', predicate.get('startDate'));
+  }
 }
 
 export function listenToEventFromFirestore(eventId) {
@@ -130,7 +143,12 @@ export async function setMainPhoto(photo) {
 
 export function deletePhotoFromCollection(photoId) {
   const userId = firebase.auth().currentUser.uid;
-  return db.collection('users').doc(userId).collection('photos').doc(photoId).delete();
+  return db
+    .collection('users')
+    .doc(userId)
+    .collection('photos')
+    .doc(photoId)
+    .delete();
 }
 
 export function addEventAttendance(event) {
