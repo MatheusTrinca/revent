@@ -6,15 +6,7 @@ import { format } from 'date-fns';
 import { deleteEventInFirestore } from '../../../app/firestore/firestoreService';
 
 const EventListItem = ({ event }) => {
-  const {
-    title,
-    date,
-    description,
-    venue,
-    hostedBy,
-    hostPhotoURL,
-    attendees,
-  } = event;
+  const { title, date, description, venue, hostedBy, hostPhotoURL, attendees, userUid } = event;
 
   return (
     <Segment.Group>
@@ -24,7 +16,9 @@ const EventListItem = ({ event }) => {
             <Item.Image circular size="tiny" src={hostPhotoURL} />
             <Item.Content>
               <Item.Header content={title} />
-              <Item.Description>Hosted by {hostedBy}</Item.Description>
+              <Item.Description>
+                Hosted by <Link to={`/profile/${userUid}`}>{hostedBy}</Link>
+              </Item.Description>
               {event.isCancelled && (
                 <Label
                   style={{ top: -40 }}
@@ -46,9 +40,7 @@ const EventListItem = ({ event }) => {
       <Segment secondary>
         <List horizontal>
           {attendees.length > 0
-            ? attendees.map(attendee => (
-                <EventListAttendee key={attendee.id} attendee={attendee} />
-              ))
+            ? attendees.map(attendee => <EventListAttendee key={attendee.id} attendee={attendee} />)
             : null}
         </List>
       </Segment>
@@ -60,13 +52,7 @@ const EventListItem = ({ event }) => {
           content="Delete"
           onClick={() => deleteEventInFirestore(event.id)}
         />
-        <Button
-          as={Link}
-          to={`/events/${event.id}`}
-          color="teal"
-          floated="right"
-          content="View"
-        />
+        <Button as={Link} to={`/events/${event.id}`} color="teal" floated="right" content="View" />
       </Segment>
     </Segment.Group>
   );

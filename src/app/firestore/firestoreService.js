@@ -147,3 +147,19 @@ export function addEventAttendance(event) {
       attendeesIds: firebase.firestore.FieldValue.arrayUnion(user.uid),
     });
 }
+
+export async function cancelEventAttendance(event) {
+  const user = firebase.auth().currentUser;
+  try {
+    const eventDoc = await db.collection('events').doc(event.id).get();
+    return db
+      .collection('events')
+      .doc(event.id)
+      .update({
+        attendeesIds: firebase.firestore.FieldValue.arrayRemove(event.id),
+        attendees: eventDoc.data().attendees.filter(att => att.id !== user.uid),
+      });
+  } catch (error) {
+    throw error;
+  }
+}

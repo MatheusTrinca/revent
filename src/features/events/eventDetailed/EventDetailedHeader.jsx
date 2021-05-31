@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Segment, Image, Item, Button, Header } from 'semantic-ui-react';
 import { format } from 'date-fns';
 import { toast } from 'react-toastify';
-import { addEventAttendance } from '../../../app/firestore/firestoreService';
+import { addEventAttendance, cancelEventAttendance } from '../../../app/firestore/firestoreService';
 
 export default function EventDetailedHeader({ event, isGoing, isHost }) {
   console.log(isGoing);
@@ -13,6 +13,17 @@ export default function EventDetailedHeader({ event, isGoing, isHost }) {
     setLoading(true);
     try {
       await addEventAttendance(event);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleUserLeaveEvent() {
+    setLoading(true);
+    try {
+      await cancelEventAttendance(event);
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -45,7 +56,10 @@ export default function EventDetailedHeader({ event, isGoing, isHost }) {
                 <Header size="huge" content={event.title} style={{ color: 'white' }} />
                 <p>{format(event.date, 'MMMM d, yyyy h:mm a')}</p>
                 <p>
-                  Hosted by <strong>{event.hostedBy}</strong>
+                  Hosted by{' '}
+                  <strong>
+                    <Link to={`/profile/${event.userUid}`}>{event.hostedBy}</Link>
+                  </strong>
                 </p>
               </Item.Content>
             </Item>
@@ -57,7 +71,9 @@ export default function EventDetailedHeader({ event, isGoing, isHost }) {
         {!isHost && (
           <>
             {isGoing ? (
-              <Button>Cancel My Place</Button>
+              <Button loading={loading} onClick={handleUserLeaveEvent}>
+                Cancel My Place
+              </Button>
             ) : (
               <Button loading={loading} onClick={handleUserJoinEvent} color="teal">
                 JOIN THIS EVENT
