@@ -143,12 +143,7 @@ export async function setMainPhoto(photo) {
 
 export function deletePhotoFromCollection(photoId) {
   const userId = firebase.auth().currentUser.uid;
-  return db
-    .collection('users')
-    .doc(userId)
-    .collection('photos')
-    .doc(photoId)
-    .delete();
+  return db.collection('users').doc(userId).collection('photos').doc(photoId).delete();
 }
 
 export function addEventAttendance(event) {
@@ -179,5 +174,25 @@ export async function cancelEventAttendance(event) {
       });
   } catch (error) {
     throw error;
+  }
+}
+
+export function getUserEventsQuery(activeTab, userUid) {
+  let eventsRef = db.collection('events');
+  const today = new Date();
+  switch (activeTab) {
+    case 1: // Past Events
+      return eventsRef
+        .where('attendeesIds', 'array-contains', userUid)
+        .where('date', '<=', today)
+        .orderBy('date', 'desc');
+    case 2: // Hosting
+      return eventsRef.where('userUid', '==', userUid).orderBy('date');
+    default:
+      // Future Events
+      return eventsRef
+        .where('attendeesIds', 'array-contains', userUid)
+        .where('date', '>=', today)
+        .orderBy('date');
   }
 }
