@@ -1,16 +1,11 @@
 import React from 'react';
 import { Segment, Header, Comment, Form, Button } from 'semantic-ui-react';
+import EventDetailedChatForm from './EventDetailedChatForm';
 
-export default function EventDetailedChat() {
+export default function EventDetailedChat({ eventId }) {
   return (
     <>
-      <Segment
-        textAlign="center"
-        attached="top"
-        inverted
-        color="teal"
-        style={{ border: 'none' }}
-      >
+      <Segment textAlign="center" attached="top" inverted color="teal" style={{ border: 'none' }}>
         <Header>Chat about this event</Header>
       </Segment>
 
@@ -37,9 +32,7 @@ export default function EventDetailedChat() {
                 <div>Yesterday at 12:30AM</div>
               </Comment.Metadata>
               <Comment.Text>
-                <p>
-                  This has been very useful for my research. Thanks as well!
-                </p>
+                <p>This has been very useful for my research. Thanks as well!</p>
               </Comment.Text>
               <Comment.Actions>
                 <Comment.Action>Reply</Comment.Action>
@@ -76,15 +69,7 @@ export default function EventDetailedChat() {
             </Comment.Content>
           </Comment>
 
-          <Form reply>
-            <Form.TextArea />
-            <Button
-              content="Add Reply"
-              labelPosition="left"
-              icon="edit"
-              primary
-            />
-          </Form>
+          <EventDetailedChatForm eventId={eventId} />
         </Comment.Group>
       </Segment>
     </>
