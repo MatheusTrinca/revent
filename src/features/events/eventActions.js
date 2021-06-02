@@ -3,6 +3,7 @@ import {
   UPDATE_EVENT,
   DELETE_EVENT,
   FETCH_EVENTS,
+  LISTEN_TO_EVENT_CHAT,
 } from './eventConstants';
 import { fetchSampleData } from '../../app/api/mockAPI';
 import {
@@ -45,5 +46,12 @@ export const deleteEvent = eventId => {
   return {
     type: DELETE_EVENT,
     payload: eventId,
+  };
+};
+
+export const listenToEventChat = comments => {
+  return {
+    type: LISTEN_TO_EVENT_CHAT,
+    payload: comments,
   };
 };

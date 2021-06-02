@@ -24,11 +24,7 @@ function App() {
   return (
     <>
       <ModalManager />
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar
-      />
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <Route exact path="/" component={HomePage} />
       <Route
         path={'/(.+)'}
@@ -39,11 +35,7 @@ function App() {
               <Route exact path="/events" component={EventDashboard} />
               <Route exact path="/sandbox" component={Sandbox} />
               <Route path="/events/:id" component={EventDetailedPage} />
-              <Route
-                path={['/createEvent', '/manage/:id']}
-                component={EventForm}
-                key={key}
-              />
+              <Route path={['/createEvent', '/manage/:id']} component={EventForm} key={key} />
               <Route path="/account" component={AccountPage} />
               <Route path="/profile/:id" component={ProfilePage} />
               <Route path="/error" component={ErrorComponent} />

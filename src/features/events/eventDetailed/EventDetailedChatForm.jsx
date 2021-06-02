@@ -23,12 +23,7 @@ export default function EventDetailedChatForm({ eventId }) {
     >
       {({ isSubmitting }) => (
         <Form className="ui form">
-          <MyTextAreaInput
-            style={{ marginTop: 10 }}
-            name="comment"
-            placeholder="Please enter your comment here"
-            rows={2}
-          />
+          <MyTextAreaInput name="comment" placeholder="Please enter your comment here" rows={2} />
           <Button loading={isSubmitting} content="Add reply" icon="edit" primary type="submit" />
         </Form>
       )}

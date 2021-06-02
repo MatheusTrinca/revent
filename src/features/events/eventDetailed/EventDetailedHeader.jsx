@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 import { addEventAttendance, cancelEventAttendance } from '../../../app/firestore/firestoreService';
 
 export default function EventDetailedHeader({ event, isGoing, isHost }) {
-  console.log(isGoing);
   const [loading, setLoading] = useState(false);
 
   async function handleUserJoinEvent() {
