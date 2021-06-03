@@ -4,6 +4,8 @@ import {
   LISTEN_TO_USER_EVENTS,
   LISTEN_TO_FOLLOWERS,
   LISTEN_TO_FOLLOWINGS,
+  SET_FOLLOW_USER,
+  SET_UNFOLLOW_USER,
 } from './profileConstants';
 import { LISTEN_TO_SELECTED_USER_PROFILE } from './profileConstants';
 
@@ -44,7 +46,19 @@ export function listenToFollowings(followings) {
 
 export function listenToFollowers(followers) {
   return {
-    type: LISTEN_TO_FOLLOWINGS,
+    type: LISTEN_TO_FOLLOWERS,
     payload: followers,
+  };
+}
+
+export function setFollowUser() {
+  return {
+    type: SET_FOLLOW_USER,
+  };
+}
+
+export function setUnFollowUser() {
+  return {
+    type: SET_UNFOLLOW_USER,
   };
 }

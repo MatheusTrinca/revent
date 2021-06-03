@@ -258,3 +258,16 @@ export async function unFollowUser(profile) {
     throw error;
   }
 }
+
+export function getFollowingsCollection(profileId) {
+  return db.collection('following').doc(profileId).collection('userFollowing');
+}
+
+export function getFollowersCollection(profileId) {
+  return db.collection('following').doc(profileId).collection('userFollowers');
+}
+
+export function getFollowingDoc(profileId) {
+  const userUid = firebase.auth().currentUser.uid;
+  return db.collection('following').doc(userUid).collection('userFollowing').doc(profileId).get();
+}
