@@ -6,6 +6,7 @@ import {
   LISTEN_TO_FOLLOWINGS,
   SET_FOLLOW_USER,
   SET_UNFOLLOW_USER,
+  LISTEN_TO_USER_FEED,
 } from './profileConstants';
 import { LISTEN_TO_SELECTED_USER_PROFILE } from './profileConstants';
 
@@ -60,5 +61,12 @@ export function setFollowUser() {
 export function setUnFollowUser() {
   return {
     type: SET_UNFOLLOW_USER,
+  };
+}
+
+export function listenToUserFeed(feed) {
+  return {
+    type: LISTEN_TO_USER_FEED,
+    payload: feed,
   };
 }

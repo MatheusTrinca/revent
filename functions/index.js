@@ -15,7 +15,11 @@ exports.addFollowing = functions.firestore
       const userDoc = await db.collection('users').doc(userUid).get();
       const batch = db.batch();
       batch.set(
-        db.collection('following').doc(profileId).collection('userFollowers').doc(userUid),
+        db
+          .collection('following')
+          .doc(profileId)
+          .collection('userFollowers')
+          .doc(userUid),
         {
           displayName: userDoc.data().displayName,
           photoURL: userDoc.data().photoURL,
@@ -39,7 +43,11 @@ exports.removeFollowing = functions.firestore
     const userUid = context.params.userUid;
     const profileId = context.params.profileId;
     batch.delete(
-      db.collection('following').doc(profileId).collection('userFollowers').doc(userUid)
+      db
+        .collection('following')
+        .doc(profileId)
+        .collection('userFollowers')
+        .doc(userUid)
     );
     batch.update(db.collection('users').doc(profileId), {
       followerCount: admin.firestore.FieldValue.increment(-1),
@@ -50,3 +58,79 @@ exports.removeFollowing = functions.firestore
       return console.log(error);
     }
   });
+
+exports.eventUpdated = functions.firestore
+  .document('events/{eventId}')
+  .onUpdate(async (snapshot, context) => {
+    const before = snapshot.before.data();
+    const after = snapshot.after.data();
+    if (before.attendees.length < after.attendees.length) {
+      let attendeeJoined = after.attendees.filter(
+        item1 => !before.attendees.some(item2 => item2.id === item1.id)
+      )[0];
+      console.log({ attendeeJoined });
+      try {
+        const followerDocs = await db
+          .collection('following')
+          .doc(attendeeJoined.id)
+          .collection('userFollowers')
+          .get();
+        followerDocs.forEach(doc => {
+          admin
+            .database()
+            .ref(`/posts/${doc.id}`)
+            .push(
+              newPost(
+                attendeeJoined,
+                'joined-event',
+                context.params.eventId,
+                before
+              )
+            );
+        });
+      } catch (error) {
+        return console.log(error);
+      }
+    }
+    if (before.attendees.length > after.attendees.length) {
+      let attendeeLeft = before.attendees.filter(
+        item1 => !after.attendees.some(item2 => item2.id === item1.id)
+      )[0];
+      console.log({ attendeeLeft });
+      try {
+        const followerDocs = await db
+          .collection('following')
+          .doc(attendeeLeft.id)
+          .collection('userFollowers')
+          .get();
+        followerDocs.forEach(doc => {
+          admin
+            .database()
+            .ref(`/posts/${doc.id}`)
+            .push(
+              newPost(
+                attendeeLeft,
+                'left-event',
+                context.params.eventId,
+                before
+              )
+            );
+        });
+      } catch (error) {
+        return console.log(error);
+      }
+    }
+    return console.log('finished');
+  });
+
+function newPost(user, code, eventId, event) {
+  return {
+    photoURL: user.photoURL,
+    date: admin.database.ServerValue.TIMESTAMP,
+    code,
+    displayName: user.displayName,
+    eventId,
+    userUid: user.id,
+    title: event.title,
+  };
+}
