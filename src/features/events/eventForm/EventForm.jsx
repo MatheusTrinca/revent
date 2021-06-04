@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Segment, Header, Button, Confirm } from 'semantic-ui-react';
 import { Link, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { listenToEvents } from '../eventActions';
+import { listenToEvent } from '../eventActions';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import MyTextInput from '../../../app/common/form/MyTextInput';
@@ -23,9 +23,7 @@ import {
 import { toast } from 'react-toastify';
 
 const EventForm = ({ match, history }) => {
-  const selectedEvent = useSelector(state =>
-    state.event.events.find(event => event.id === match.params.id)
-  );
+  const { selectedEvent } = useSelector(state => state.event);
 
   const dispatch = useDispatch();
 
@@ -65,7 +63,7 @@ const EventForm = ({ match, history }) => {
   useFirestoreDoc({
     shouldExecute: !!match.params.id,
     query: () => listenToEventFromFirestore(match.params.id),
-    data: event => dispatch(listenToEvents([event])),
+    data: event => dispatch(listenToEvent(event)),
     deps: [match.params.id, dispatch],
   });
 
@@ -107,16 +105,8 @@ const EventForm = ({ match, history }) => {
           <Form className="ui form">
             <Header sub color="teal" content="Event Details" />
             <MyTextInput placeholder="Event Title" name="title" />
-            <MySelectInput
-              placeholder="Event Category"
-              name="category"
-              options={categoryData}
-            />
-            <MyTextAreaInput
-              placeholder="Description"
-              name="description"
-              rows={2}
-            />
+            <MySelectInput placeholder="Event Category" name="category" options={categoryData} />
+            <MyTextAreaInput placeholder="Description" name="description" rows={2} />
             <Header sub color="teal" content="Event Location Details" />
             <MyPlacesInput placeholder="City" name="city" />
             <MyPlacesInput
@@ -143,11 +133,7 @@ const EventForm = ({ match, history }) => {
                 type="button"
                 floated="left"
                 color={selectedEvent.isCancelled ? 'green' : 'red'}
-                content={
-                  selectedEvent.isCancelled
-                    ? 'Reactivate event'
-                    : 'Cancel event'
-                }
+                content={selectedEvent.isCancelled ? 'Reactivate event' : 'Cancel event'}
                 onClick={() => setConfirmOpen(true)}
               />
             )}

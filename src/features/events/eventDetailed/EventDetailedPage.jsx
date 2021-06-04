@@ -7,14 +7,12 @@ import EventDetailedInfo from './EventDetailedInfo';
 import EventDetailedSidebar from './EventDetailedSidebar';
 import useFirestoreDoc from '../../../app/hooks/useFirestoreDoc';
 import { listenToEventFromFirestore } from '../../../app/firestore/firestoreService';
-import { listenToEvents } from '../eventActions';
+import { listenToEvent } from '../eventActions';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { Redirect } from 'react-router-dom';
 
 export default function EventDetailedPage({ match }) {
-  const event = useSelector(state =>
-    state.event.events.find(event => event.id === match.params.id)
-  );
+  const event = useSelector(state => state.event.selectedEvent);
 
   const dispatch = useDispatch();
 
@@ -27,7 +25,7 @@ export default function EventDetailedPage({ match }) {
 
   useFirestoreDoc({
     query: () => listenToEventFromFirestore(match.params.id),
-    data: event => dispatch(listenToEvents([event])),
+    data: event => dispatch(listenToEvent(event)),
     deps: [match.params.id],
   });
 

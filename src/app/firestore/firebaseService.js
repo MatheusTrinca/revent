@@ -12,9 +12,7 @@ export function firebaseObjectToArray(snapshot) {
 }
 
 export function signInWithEmail(creds) {
-  return firebase
-    .auth()
-    .signInWithEmailAndPassword(creds.email, creds.password);
+  return firebase.auth().signInWithEmailAndPassword(creds.email, creds.password);
 }
 
 export function signOutFirebase() {
@@ -90,9 +88,5 @@ export function getEventChatRef(eventId) {
 
 export function getUserFeedRef() {
   const user = firebase.auth().currentUser;
-  return firebase
-    .database()
-    .ref(`posts/${user.uid}`)
-    .orderByKey()
-    .limitToLast(5);
+  return firebase.database().ref(`posts/${user.uid}`).orderByKey().limitToLast(5);
 }
