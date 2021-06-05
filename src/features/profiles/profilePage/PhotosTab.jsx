@@ -67,7 +67,7 @@ export default function AboutTab({ profile, isCurrentUser }) {
               {photos.map(photo => (
                 <Card key={photo.id}>
                   <Image src={photo.url} />
-                  <Button.Group fuild widths={2}>
+                  <Button.Group fluid widths={2}>
                     <Button
                       name={photo.id}
                       loading={updating.isUpdating && updating.target === photo.id}
