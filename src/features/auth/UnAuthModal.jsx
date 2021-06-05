@@ -1,14 +1,20 @@
 import React from 'react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Divider } from 'semantic-ui-react';
 import { openModal } from '../../app/common/modals/modalReducer';
 
-export default function UnAuthModal() {
-  const [open, setOpen] = useState(false);
+export default function UnAuthModal({ history }) {
+  const [open, setOpen] = useState(true);
+  const { prevLocation } = useSelector(state => state);
   const dispatch = useDispatch();
 
   function handleClose() {
+    if (history && prevLocation) {
+      history.push(prevLocation.pathname);
+    } else {
+      history.push('/events');
+    }
     setOpen(false);
   }
 
@@ -19,6 +25,7 @@ export default function UnAuthModal() {
         <p>Please either login or register to see this content</p>
         <Button.Group>
           <Button
+            style={{ marginRight: 1 }}
             fluid
             color="teal"
             content="Login"
@@ -26,6 +33,7 @@ export default function UnAuthModal() {
           />
           <Button.Or />
           <Button
+            style={{ marginLeft: 1 }}
             fluid
             color="green"
             content="Register"
