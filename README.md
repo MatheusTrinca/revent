@@ -8,3 +8,6 @@ Formik
 React Google Maps
 Dropzone
 Cropper
+
+
+4. Creating a private route
