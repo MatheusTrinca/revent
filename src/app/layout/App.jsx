@@ -35,7 +35,7 @@ function App() {
             <Container className="main">
               <Route exact path="/events" component={EventDashboard} />
               <Route exact path="/sandbox" component={Sandbox} />
-              <PrivateRoute path="/events/:id" component={EventDetailedPage} />
+              <Route path="/events/:id" component={EventDetailedPage} />
               <PrivateRoute
                 path={['/createEvent', '/manage/:id']}
                 component={EventForm}
