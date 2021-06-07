@@ -1,4 +1,6 @@
-# REVENT
+# REVENTS
+
+https://revents-db.firebaseapp.com/
 
 - React
 - Redux
@@ -8,5 +10,3 @@
 - React Google Maps
 - Dropzone
 - Cropper
-
-4. Creating a private route

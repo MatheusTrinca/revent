@@ -21,16 +21,22 @@ import {
   cancelEventToggle,
 } from '../../../app/firestore/firestoreService';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
+import { CLEAR_SELECTED_EVENT } from '../eventConstants';
 
-const EventForm = ({ match, history }) => {
-  const { selectedEvent } = useSelector(state => state.event);
-
+const EventForm = ({ match, history, location }) => {
   const dispatch = useDispatch();
 
+  const { selectedEvent } = useSelector(state => state.event);
   const { loading, error } = useSelector(state => state.async);
 
   const [loadingCancel, setLoadingCancel] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname !== '/createEvent') return;
+    dispatch({ type: CLEAR_SELECTED_EVENT });
+  }, [dispatch, location.pathname]);
 
   const initialValues = selectedEvent || {
     title: '',
@@ -61,7 +67,7 @@ const EventForm = ({ match, history }) => {
   });
 
   useFirestoreDoc({
-    shouldExecute: !!match.params.id,
+    shouldExecute: match.params.id !== selectedEvent?.id && location.pathname !== '/createEvent',
     query: () => listenToEventFromFirestore(match.params.id),
     data: event => dispatch(listenToEvent(event)),
     deps: [match.params.id, dispatch],
@@ -86,6 +92,7 @@ const EventForm = ({ match, history }) => {
   return (
     <Segment clearing>
       <Formik
+        enableReinitialize
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
           try {
@@ -126,6 +133,7 @@ const EventForm = ({ match, history }) => {
               showTimeSelect
               timeCaption="time"
               dateFormat="MMMM d, yyyy h:mm a"
+              autoComplete="off"
             />
             {selectedEvent && (
               <Button
